@@ -119,7 +119,7 @@ Running Clients
 ---------------
 Please look in the runscripts folder in SEAL for examples of scripts used to run the
 benchmarks in the paper.
-Similar scripts/configurations could be used to analyzed new clients
+Similar scripts/configurations could be used to analyze new clients
 
 Notes
 -----
@@ -149,3 +149,9 @@ of unsoundness
 Note that DeadWait is a proof-of-concept research tool.
 Please write to anirudh_s@csa.iisc.ernet.in to report bugs/for
 information not in this manual/our paper.
+
+Acknowledgments
+----------------
+
+Grants from Google India, IARCS and SIGPLAN made it possible to travel
+to PLDI '17 to present the paper this tool is based on.
