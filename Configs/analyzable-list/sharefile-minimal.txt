@@ -1,0 +1,5 @@
+Namespace: ShareFile.Api.Client
+Namespace: Sharefile.DeadlockClient
+Namespace: ShareFile.Api.Client.Transfers
+Namespace: ShareFile.Api.Client.Transfers.Downloaders
+Namespace: ShareFile.Api.Client.Transfers.Uploaders

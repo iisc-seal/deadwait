@@ -1,0 +1,3 @@
+Namespace: Microsoft.Azure.Management.Storage
+Namespace: Microsoft.Rest
+Namespace: DeadlockAzureStorage

@@ -1,0 +1,5 @@
+Namespace: Microsoft.Azure.WebJobs.Script.Description
+Namespace: Microsoft.Azure.WebJobs.Script.WebHost
+Namespace: Microsoft.Azure.WebJobs.Script.Controllers
+Namespace: Microsoft.Azure.WebJobs.Script
+Namespace: DeadlockWebjobsScript

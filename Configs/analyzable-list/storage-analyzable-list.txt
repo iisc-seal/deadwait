@@ -1,0 +1,5 @@
+Namespace: Microsoft.WindowsAzure.Storage
+Namespace: Microsoft.WindowsAzure.Storage.Blob
+Namespace: Microsoft.WindowsAzure.Storage.File
+Namespace: Microsoft.WindowsAzure.Storage.Core.Util
+Namespace: DeadlockStorage

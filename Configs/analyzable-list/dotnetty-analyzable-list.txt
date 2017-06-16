@@ -1,0 +1,5 @@
+Namespace: DotNetty.Common.Concurrency
+Namespace: DotNetty.Codecs
+Namespace: DotNetty.Transport.Channels
+Namespace: DotNetty.Handlers.Tls
+Namespace: DeadlockDotNetty

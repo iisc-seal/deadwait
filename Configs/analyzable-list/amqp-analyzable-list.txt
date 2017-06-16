@@ -1,0 +1,4 @@
+Namespace: Amqp
+Namespace: Amqp.Transactions
+Namespace: Amqp.Framing
+Namespace: Amqp.Client

@@ -1,0 +1,2 @@
+Namespace: Microsoft.Azure.Management.DataLake.Store
+Namespace: DeadlockAzureSDK

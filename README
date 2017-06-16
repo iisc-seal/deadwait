@@ -1,0 +1,151 @@
+LICENSE
+-------
+
+DeadWait is built on top of SEAL. The license for SEAL is 
+Microsoft Public License (Ms-PL), and the modifications
+to Seal follow the same license.
+However, code pertaining to DeadWait (files not present in Seal)
+is available under the Apache License, version 2.0. Please see the
+LICENSE file for details.
+
+
+Requirements
+------------
+DeadWait is built on top of the Microsoft Phoenix Compiler Framework and SEAL.
+They have the following requirements
+
+
+* Microsoft.NET 4/4.5 Framework
+* Visual Studio 2013 or later [not tested with VS 2017]
+* Microsoft SQL Server Compact 3.5 Service Pack 2 for Windows Desktop.
+It can be downloaded from here: http://www.microsoft.com/en-us/download/details.aspx?id=5783
+Install the x86 version of SQL Compact 3.5 SP2 (SSCERuntime_x86-ENU.exe)
+* 4GB patch [download here: http://www.ntcore.com/4gb_patch.php]
+DeadWait and SEAL are 32bit applications since Phoenix is 32bit. The available virtual memory is 2GB. 
+To make it use 4GB, one can use the patch, but allowing for more memory than that will require porting
+SEAL to a different front-end
+
+Workflow
+---------
+
+DeadWait uses pointer and callgraph information from SEAL, which is a bottom up analysis.
+The first step is to pre-compute summaries for the standard framework libraries (and other
+libraries the benchmarks might use.)
+Summaries for the following framework libraries are created by 
+default: "mscorlib", "system" and "system.core"
+The default path for these dlls is usually C:\Windows\Microsoft.NET\Framework64\v4.0.30319\*
+for a 64-bit .NET installation
+This process should take between 20-30 mins depending on the hardware configuration.
+Once the one-time installation is complete, DeadWait is ready to run
+
+Technical details
+------------------
+For technical details about DeadWait, refer "Static Deadlock Detection for Asynchronous C# Programs" 
+by A Santhiar and A Kanade in PLDI '17.
+
+For more details about SEAL, refer "A Framework For Efficient Modular Heap Analysis" by
+R Madhavan, G Ramalingam and K Vaswani, In Foundations and Trends In Programming Languages
+, Volume 1, Issue 4, 2015.]
+
+
+Installation Instructions
+--------------------------
+
+* Run the script SETENV.ps1 from powershell (reopen the shell for the settings to take effect)
+* open the solution Seal.sln in VS 
+* build the solution
+* Run the script CREATEDB.ps1 (this could take several minutes)
+* Check the installation by running the testsuites "BasicTests" and "LibTests" using VS.
+
+Usage Instructions
+------------------
+The configuration files for Seal/DeadWait are in SEAL/Configs
+The default configuration used is SEAL/Configs/default.config
+
+* The may-alias query implemented by DeadWait requires full context-sensitivity.
+The configuration used by all our benchmarks is
+FlowSensitivity 		= false
+BoundContextString 		= false
+
+* The top-down pass in DeadWait to compute points-to information requires
+disabling some optimizations of SEAL because SEAL can discard points-to information
+for variables in callees that do not escape. This is accomplished by the following 
+configuration switches:
+DisableSummaryReduce		= false
+RemoveNonEscaping		= false
+
+* The false positive pruning techniques employed by DeadWait can be 
+disabled using
+FilterMustHB = false
+FilterConfigured = false;
+
+* The top-down phase needn't be run while analyzing framework/3rd party libraries
+in the pre-processing pass. Hence, the switch '/framework "true"'' is passed to 
+Checher.exe
+
+* On analyzing a client, the dll containing the main method is to be 
+passed as the last dll in the list of dlls analyzed by SEAL
+
+Relevant Output Flags
+---------------------
+
+DumpProgressToConsole
+Shows some progress information
+
+DumpIR				
+Dump the high level IR analyzed by Phoenix for each method
+
+DumpSummariesAsGraphs 		
+Display the summaries computed by SEAL in the Bottom-Up phase as graphs
+
+DumpWholeProgramCallGraph	
+Display the call-graph for the client
+
+
+DumpStateMachineGraphs		
+Display the state machines computed for async procedures
+
+DumpPointsToGraphs		
+Display the points-to information computed for each method after the top-down pass
+
+DumpFlowGraphs			
+Display the flow-graphs corresponding to the Phoenix IR. Useful to understand/debug
+the data flow analysis used to compute state machines
+
+Some other output flags relevant to SEAL are documented here 
+https://seal.codeplex.com/wikipage?title=Inputs%20to%20Seal
+
+Running Clients
+---------------
+Please look in the runscripts folder in SEAL for examples of scripts used to run the
+benchmarks in the paper.
+Similar scripts/configurations could be used to analyzed new clients
+
+Notes
+-----
+
+* Detailed documentation about SEAL is here:
+https://seal.codeplex.com/documentation
+
+* Some of the tests in the test suite "LibTests" may fail due to the differences in 
+the .NET version used during the development and the one installed in the user end.
+
+* Unsoundness of SEAL
+1. Thread based concurrency: The version of SEAL that handles interleavings between the different 
+threads in the program was not public at the time of writing DeadWait. If this is crucial for your client,
+then DeadWait should be ported to work with the branch https://github.com/ravimad/SEAL/tree/parallelism
+2. Reflection: Seal treats reflection unsoundly.
+3. Passing fields by reference: C# supports pass by reference mechanism (via the ref or out keyword), Seal, in its current state, does not correctly model the passing of fields by reference (nevertheless it handles most common usage scenarios).  
+4. Referencing libraries other than the 3 standard .NET libraries: mscorlib.dll, system.dll and system.core.dll and not specifying them as input
+
+* Unsoundness of DeadWait
+1. One of the techniques used by DeadWait to prune deadlock reports is unsound - refer to the paper for details
+2. It is beyond the scope of DeadWait to model every Task Parallel Library/.NET framework method that 
+might introduce parallel behaviours. DeadWait models only the most common idioms.
+
+DeadWait tries to print warning messages to the console whenever it is able to detect a potential source 
+of unsoundness
+
+Note that DeadWait is a proof-of-concept research tool.
+Please write to anirudh_s@csa.iisc.ernet.in to report bugs/for
+information not in this manual/our paper.
