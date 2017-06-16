@@ -1,12 +1,12 @@
 LICENSE
 -------
 
-DeadWait is built on top of SEAL [https://github.com/ravimad/SEAL] The
-license for SEAL is Microsoft Public License (Ms-PL), and the
-modifications to Seal follow the same license.  However, code
-pertaining to DeadWait (files not present in Seal) is available under
-the Apache License, version 2.0. Please see the LICENSE file for
-details.
+DeadWait is built on top of SEAL
+[https://github.com/ravimad/SEAL]. SEAL is distributed under the
+Microsoft Public License (Ms-PL), and the modifications made by
+DeadWait to Seal follow the same license.  However, code pertaining to
+DeadWait (files not present in Seal) is available under the Apache
+License, version 2.0. Please see the LICENSE file for details.
 
 
 Requirements
